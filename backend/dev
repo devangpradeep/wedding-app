@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
+
+if [[ ! -f .env ]]; then
+  printf '%s\n' 'Missing backend/.env. Run node scripts/setup-env.mjs from the repository root, then configure your database connection.' >&2
+  exit 1
+fi
+
+set -a
+source ./.env
+set +a
+
+exec ./mvnw spring-boot:run "$@"
